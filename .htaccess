@@ -1,0 +1,24 @@
+RewriteEngine On
+RewriteBase /
+
+# If the request maps to an existing file or directory, don't rewrite (serve static assets)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Friendly routes for pages (moved into pages/ directory)
+# Support /chat (no id) and treat it as user_id=0
+RewriteRule ^chat$ /pages/chat.php?user_id=0 [L,QSA]
+RewriteRule ^chat/([0-9]+)$ /pages/chat.php?user_id=$1 [L,QSA]
+RewriteRule ^logout/([0-9]+)$ /php/logout.php?logout_id=$1 [L,QSA]
+RewriteRule ^login$ /pages/login.php [L,QSA]
+RewriteRule ^signup$ /pages/signup.php [L,QSA]
+RewriteRule ^users$ /pages/users.php [L,QSA]
+
+# API friendly endpoints
+RewriteRule ^api/chat/send$ /php/insert-chat.php [L,QSA]
+RewriteRule ^api/chat/get$ /php/get-chat.php [L,QSA]
+RewriteRule ^api/users$ /php/users.php [L,QSA]
+RewriteRule ^api/search$ /php/search.php [L,QSA]
+RewriteRule ^api/auth/login$ /php/login.php [L,QSA]
+RewriteRule ^api/auth/signup$ /php/signup.php [L,QSA]
